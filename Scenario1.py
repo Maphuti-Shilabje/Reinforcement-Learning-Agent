@@ -230,27 +230,32 @@ if __name__ == "__main__":
 
     # Save aggregated results (average over runs)
     # Ensure all runs had the same number of epochs for straightforward averaging
-    if all_runs_rewards: # Check if list is not empty
+    if all_runs_rewards: 
         avg_rewards_over_runs = np.mean(np.array(all_runs_rewards), axis=0)
         avg_steps_over_runs = np.mean(np.array(all_runs_steps), axis=0)
-        std_rewards_over_runs = np.std(np.array(all_runs_rewards), axis=0) # For stability analysis
-        std_steps_over_runs = np.std(np.array(all_runs_steps), axis=0)     # For stability analysis
+        std_rewards_over_runs = np.std(np.array(all_runs_rewards), axis=0) 
+        std_steps_over_runs = np.std(np.array(all_runs_steps), axis=0)     
 
         stochastic_suffix = "_stochastic" if args.stochastic else ""
-        avg_rewards_filename = f"{args.results_dir}/{args.strategy}{stochastic_suffix}_avg_rewards_over_{args.runs}_runs.npy"
-        avg_steps_filename = f"{args.results_dir}/{args.strategy}{stochastic_suffix}_avg_steps_over_{args.runs}_runs.npy"
-        std_rewards_filename = f"{args.results_dir}/{args.strategy}{stochastic_suffix}_std_rewards_over_{args.runs}_runs.npy"
-        std_steps_filename = f"{args.results_dir}/{args.strategy}{stochastic_suffix}_std_steps_over_{args.runs}_runs.npy"
+        # --- MODIFICATION START ---
+        scenario_prefix = "s1" 
+        base_fn_stem = f"{scenario_prefix}_{args.strategy}{stochastic_suffix}_over_{args.runs}_runs"
+        
+        avg_rewards_filename = os.path.join(args.results_dir, f"{base_fn_stem}_avg_rewards.npy")
+        avg_steps_filename = os.path.join(args.results_dir, f"{base_fn_stem}_avg_steps.npy")
+        std_rewards_filename = os.path.join(args.results_dir, f"{base_fn_stem}_std_rewards.npy")
+        std_steps_filename = os.path.join(args.results_dir, f"{base_fn_stem}_std_steps.npy")
+        # --- MODIFICATION END ---
 
         np.save(avg_rewards_filename, avg_rewards_over_runs)
         np.save(avg_steps_filename, avg_steps_over_runs)
         np.save(std_rewards_filename, std_rewards_over_runs)
         np.save(std_steps_filename, std_steps_over_runs)
 
-        print(f"\nSaved averaged rewards to {avg_rewards_filename}")
-        print(f"Saved averaged steps to {avg_steps_filename}")
-        print(f"Saved std dev rewards to {std_rewards_filename}")
-        print(f"Saved std dev steps to {std_steps_filename}")
+        print(f"\nS1: Saved averaged rewards to {avg_rewards_filename}") # Added S1: prefix to print
+        print(f"S1: Saved averaged steps to {avg_steps_filename}")
+        print(f"S1: Saved std dev rewards to {std_rewards_filename}")
+        print(f"S1: Saved std dev steps to {std_steps_filename}")
 
         # You would then modify your plotting script to load these averaged files
         # and potentially the std deviation files to show error bands.

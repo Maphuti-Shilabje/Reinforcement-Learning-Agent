@@ -1,5 +1,8 @@
 *.pdf
-__pycache__/
+*__pycache__/
 *.png
 *.jpg
 *.npy
+*.docx
+*.zip
+*.tar.gz
